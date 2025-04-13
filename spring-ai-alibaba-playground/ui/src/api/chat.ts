@@ -29,7 +29,7 @@ export const getChat = async (
     res = await fetch(BASE_URL + "/deep-thinking/chat?prompt=" + prompt, {
       method: "GET",
       headers: {
-        // model: model || "",
+        // model: model || "", // 只有 deepseek r1 效果好一些，所以不传 （加个前端样式提示下
         chatId: chatId || "",
       },
     });
@@ -51,7 +51,7 @@ export const getChat = async (
   console.log("reader", reader);
   await reader.read().then(function process({ done, value }) {
     if (done) return;
-    callback?.(value); // TODO: 支持打字机效果
+    callback?.(value);
     return reader.read().then(process);
   });
 

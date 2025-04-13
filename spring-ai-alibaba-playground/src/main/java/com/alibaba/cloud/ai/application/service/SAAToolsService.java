@@ -31,7 +31,6 @@ import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.ToolResponseMessage;
-import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
@@ -41,9 +40,6 @@ import org.springframework.ai.model.tool.ToolCallingManager;
 import org.springframework.ai.model.tool.ToolExecutionResult;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
-import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY;
-import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY;
 
 /**
  * @author yuluo
@@ -79,23 +75,16 @@ public class SAAToolsService {
 				).build();
 	}
 
-	public ToolCallResp chat(String chatId, String prompt) {
+	public ToolCallResp chat(String prompt) {
 
 		// manual run tools flag
-		ChatOptions chatOptions = ToolCallingChatOptions.builder().internalToolExecutionEnabled(false).build();
+		ChatOptions chatOptions = ToolCallingChatOptions.builder()
+				.toolCallbacks(toolsInit.getTools())
+				.internalToolExecutionEnabled(false)
+				.build();
+		Prompt userPrompt = new Prompt(prompt, chatOptions);
 
-		ChatResponse response = chatClient.prompt(
-						new Prompt(
-								new UserMessage(prompt),
-								chatOptions
-						))
-				.advisors(memoryAdvisor -> memoryAdvisor.param(
-								CHAT_MEMORY_CONVERSATION_ID_KEY,
-								chatId
-						).param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 1)
-						// 以 @Bean 注解注入的 Tools 会报如下错误：No ToolCallback found for tool name: baiduTranslateFunction
-						// 转为使用 FunctionCallBack 注入 Tools
-				).tools(toolsInit.getTools())
+		ChatResponse response = chatClient.prompt(userPrompt)
 				.call().chatResponse();
 
 		logger.debug("ChatResponse: {}", response);

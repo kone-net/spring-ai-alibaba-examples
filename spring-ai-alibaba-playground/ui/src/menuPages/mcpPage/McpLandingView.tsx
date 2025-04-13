@@ -19,7 +19,7 @@ const McpLandingView = () => {
 
     setIsLoading(true);
     try {
-      const newConversation = createConversation(MenuPage.Mcp, []);
+      const newConversation = createConversation(MenuPage.Mcp, [], content);
       navigate(
         `/mcp/${newConversation.id}?prompt=${encodeURIComponent(content)}`
       );

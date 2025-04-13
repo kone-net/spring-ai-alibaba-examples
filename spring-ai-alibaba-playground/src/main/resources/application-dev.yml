@@ -44,6 +44,15 @@ spring:
         options:
           model: qwen-max
 
+    # 向量数据库配置
+    vectorstore:
+      opensearch:
+        access-pass-word:
+        access-user-name:
+        instance-id:
+        endpoint:
+        enabled: true
+
     # 注意：观测数据可能存在敏感信息！
     chat:
       client:

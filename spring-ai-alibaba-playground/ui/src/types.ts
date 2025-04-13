@@ -24,3 +24,10 @@ export interface CommonMenuPageComponentProps {
   messages: any[];
   setMessages: (messages: any[]) => void;
 }
+
+export interface UiMessage {
+  id: string;
+  text: string;
+  sender: "user" | "bot";
+  timestamp: number;
+}

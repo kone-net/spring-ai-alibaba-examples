@@ -50,7 +50,8 @@ const ImageGenLandingView: React.FC = () => {
     if (!prompt.trim()) return;
     setIsLoading(true);
     try {
-      const newConversation = createConversation(MenuPage.ImageGen, []);
+      const newConversation = createConversation(MenuPage.ImageGen, [], prompt);
+
       navigate(
         `/image-gen/${newConversation.id}?prompt=${encodeURIComponent(prompt)}`
       );
@@ -61,37 +62,39 @@ const ImageGenLandingView: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.inputArea}>
-        <Sender
-          value={inputContent}
-          onChange={setInputContent}
-          onSubmit={handleCreateConversation}
-          placeholder="输入提示词开始生成图片..."
-          className={styles.sender}
-          loading={isLoading}
-        />
-      </div>
+    <BasePage title="图像生成">
+      <div className={styles.container}>
+        <div className={styles.inputArea}>
+          <Sender
+            value={inputContent}
+            onChange={setInputContent}
+            onSubmit={handleCreateConversation}
+            placeholder="输入提示词开始生成图片..."
+            className={styles.sender}
+            loading={isLoading}
+          />
+        </div>
 
-      <div>
-        <h2 style={{ margin: "0 0 16px" }}>创意灵感</h2>
-        <Masonry
-          breakpointCols={breakpointColumns}
-          className={styles.masonryGrid}
-          columnClassName={styles.masonryColumn}
-        >
-          {templateImages.map((image) => (
-            <TemplateImage
-              key={image.id}
-              id={image.id}
-              path={image.path}
-              prompt={image.prompt}
-              onUseCreative={handleUseTemplate}
-            />
-          ))}
-        </Masonry>
+        <div>
+          <h2 style={{ margin: "0 0 16px" }}>创意灵感</h2>
+          <Masonry
+            breakpointCols={breakpointColumns}
+            className={styles.masonryGrid}
+            columnClassName={styles.masonryColumn}
+          >
+            {templateImages.map((image) => (
+              <TemplateImage
+                key={image.id}
+                id={image.id}
+                path={image.path}
+                prompt={image.prompt}
+                onUseCreative={handleUseTemplate}
+              />
+            ))}
+          </Masonry>
+        </div>
       </div>
-    </div>
+    </BasePage>
   );
 };
 

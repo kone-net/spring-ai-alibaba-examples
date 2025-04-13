@@ -260,10 +260,10 @@ const FunctionMenu = (props: MenuProps) => {
                         icon={<DeleteOutlined />}
                         onClick={(e) => {
                           e.stopPropagation();
-                          if (conversations.length <= 1) {
-                            message.info("至少需要保留一个会话");
-                            return;
-                          }
+                          // if (conversations.length <= 1) {
+                          //   message.info("至少需要保留一个会话");
+                          //   return;
+                          // }
 
                           if (activeConversation?.id === conversation.id) {
                             const type = activeConversation.type;
