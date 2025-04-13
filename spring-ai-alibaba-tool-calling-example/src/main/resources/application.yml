@@ -14,5 +14,11 @@ spring:
           enabled: true
           api-key: ${WEATHER_API_KEY}
 
+        larksuite:
+          enabled: true
+          appId: ${LARK_SUITE_APP_ID}
+          appSecret: ${LARK_SUITE_APP_SECRET}
+
     dashscope:
-      api-key: ${AI_DASHSCOPE_API_KEY}
+      api-key:  ${AI_DASHSCOPE_API_KEY}
+
